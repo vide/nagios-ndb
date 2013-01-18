@@ -48,7 +48,7 @@ fi
 
 # checking data usage
 # IF ... critical .. ELSE IF .. warning
-DATA=$(${NDB_MGM} -e "2 report memory"|grep "Data usage is"|awk '{print $6}'|awk -F "%" "{ if (\$1 > ${CRIT}) {                 
+DATA=$(${NDB_MGM} -e "${NODE} report memory"|grep "Data usage is"|awk '{print $6}'|awk -F "%" "{ if (\$1 > ${CRIT}) {                 
         exit 2 
  } else if (\$1 > ${WARN}) {        
         exit 1 
@@ -60,7 +60,7 @@ RET=$?
 
 # checking index usage
 # IF ... critical .. ELSE IF .. warning
-IDX=$(${NDB_MGM} -e "2 report memory"|grep "Index usage is"|awk '{print $6}'|awk -F "%" "{ if (\$1 > ${CRIT}) {                     
+IDX=$(${NDB_MGM} -e "${NODE} report memory"|grep "Index usage is"|awk '{print $6}'|awk -F "%" "{ if (\$1 > ${CRIT}) {                     
         exit 8 
 } else if (\$1 > ${WARN}) {        
         exit 4 
