@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#NDB_MGM=$(which ndb_mgm)
-NDB_MGM="/var/lib/mysql/bin/ndb_mgm"
+NDB_MGM=$(which ndb_mgm)
 
 function printHelp() {
 
@@ -9,9 +8,9 @@ cat >&2 <<EOF
 $@
 
 Usage: $(basename $0) 
-        --warning|-w      Prefix to use before the country code (default: ${DB_PREFIX})
-        --critical|-c     Specify a custom logir, (default: /tmp/$random_dir)
-        --node-id|-n      Host to connect to (default: ${MYSQL_HOST})        
+        --warning|-w      Used memory warning threshhold
+        --critical|-c     used memory critical threshold
+        --node-id|-n      Specify which node you want to monitor
 EOF
     
 exit 2
