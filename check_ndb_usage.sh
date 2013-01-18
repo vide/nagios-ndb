@@ -13,7 +13,7 @@ Usage: $(basename $0)
         --node-id|-n      Specify which node you want to monitor
 EOF
     
-exit 2
+exit 3
 
 }
 
