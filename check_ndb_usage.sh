@@ -1,12 +1,11 @@
 #!/bin/bash
 
 NDB_MGM=$(which ndb_mgm)
-
+NDB_MGM=/opt/mysql/server-5.6/bin/ndb_mgm
 function printHelp() {
 
 cat >&2 <<EOF
 $@
-
 Usage: $(basename $0) 
         --warning|-w      Used memory warning threshhold
         --critical|-c     used memory critical threshold
@@ -46,8 +45,20 @@ then
     printHelp "Please specify a node ID"
 fi
 
-# checking data usage
-# IF ... critical .. ELSE IF .. warning
+${NDB_MGM} -e "${NODE} status"|grep -i "not connected" > /dev/null
+if [ $? -eq 0 ]; then
+        # data node offline
+        echo "Data: CRITICAL node: ${NODE} is OFFLINE"
+        exit 2
+fi
+
+${NDB_MGM} -e "${NODE} status"|grep -i "starting" > /dev/null
+if [ $? -eq 0 ]; then        
+ 	# data node starting
+        echo "Data: WARNING node: ${NODE} is STARTING"
+        exit 2
+fi
+
 DATA=$(${NDB_MGM} -e "${NODE} report memory"|grep "Data usage is"|awk '{print $6}'|awk -F "%" "{ if (\$1 > ${CRIT}) {                 
         exit 2 
  } else if (\$1 > ${WARN}) {        
@@ -115,7 +126,16 @@ case ${RET} in
         echo "Data: CRITICAL (${DATA}%) Index: CRITICAL (${IDX}%)"
         exit 2
         ;;
-
+    11)
+	# data node offline
+	echo "Data: CRITICAL node: ${NODE} is OFFLINE"
+	exit 2
+	;;
+    12)
+	# data node starting
+	echo "Data: WARNING node: ${NODE} is STARTING"
+	exit 2
+	;;
     *)  
         # unexpected condition
         echo "Unknown error"
