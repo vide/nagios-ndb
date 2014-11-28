@@ -1,7 +1,6 @@
 #!/bin/bash
 
 NDB_MGM=$(which ndb_mgm)
-NDB_MGM=/opt/mysql/server-5.6/bin/ndb_mgm
 function printHelp() {
 
 cat >&2 <<EOF
