@@ -126,16 +126,6 @@ case ${RET} in
         echo "Data: CRITICAL (${DATA}%) Index: CRITICAL (${IDX}%)"
         exit 2
         ;;
-    11)
-	# data node offline
-	echo "Data: CRITICAL node: ${NODE} is OFFLINE"
-	exit 2
-	;;
-    12)
-	# data node starting
-	echo "Data: WARNING node: ${NODE} is STARTING"
-	exit 2
-	;;
     *)  
         # unexpected condition
         echo "Unknown error"
